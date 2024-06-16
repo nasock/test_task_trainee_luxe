@@ -1,45 +1,39 @@
-// const { $ } = require('@wdio/globals')
-// const Page = require('./page');
+const FieldComponent = require('./field.component.js');
 
-// /**
-//  * sub page containing specific selectors and methods for a specific page
-//  */
-// class LoginPage extends Page {
-//     /**
-//      * define selectors using getter methods
-//      */
-//     get inputUsername () {
-//         return $('#username');
-//     }
+class LoginPage{
+    get userName(){
+        return new FieldComponent('#user-name');
+    }
 
-//     get inputPassword () {
-//         return $('#password');
-//     }
+    get password(){
+        return new FieldComponent('#password');
+    }
 
-//     get btnSubmit () {
-//         return $('button[type="submit"]');
-//     }
+    get submitButton(){
+        return $('#login-button');
+    }
 
-//     /**
-//      * a method to encapsule automation code to interact with the page
-//      * e.g. to login using username and password
-//      */
-//     async login (username, password) {
-//         await this.inputUsername.setValue(username);
-//         await this.inputPassword.setValue(password);
-//         await this.btnSubmit.click();
-//     }
+    get errorMessage(){
+        return $('[class*="error-message-container"]');
+    }
 
-//     /**
-//      * overwrite specific options to adapt it to page object
-//      */
-//     open () {
-//         return super.open('login');
-//     }
-// }
+    async insertUserName(value){
+        await this.userName.insertValue(value);
+    }
+    
+    async insertPassword(value){
+        await this.password.insertValue(value);
+    }
 
-// module.exports = new LoginPage();
+    async clickSubmitButton(){
+        await this.submitButton.click();
+    }
 
+    async waitInventoryPageDownload(){
+        await browser.waitUntil(async() => {
+            return await $('#inventory_container').isDisplayed();
+        }, 5000, "You didn't login.");
+    }
+}
 
-const { $ } = require('https://www.saucedemo.com/')
-const Page = require('./page');
+module.exports = new LoginPage();
